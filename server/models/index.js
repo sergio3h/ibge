@@ -3,13 +3,22 @@ const { Sequelize } = require('sequelize');
 const Estado = require('./Estado');
 const Municipio = require('./Municipio');
 
-const sequelize = new Sequelize({
+ const sequelize = new Sequelize({
   dialect: 'postgres',
   host: 'localhost',
   username: 'postgres',
-  password: 'postgres',
-  database: 'postgres',
+  password:'postgres',
+  database:'IBGE',
 });
+
+const connectDb = async()=>{
+    try {
+        await sequelize.authenticate();
+        console.log("Banco conectado")
+    } catch (error) {
+        console.log("Error aoconectar o banco")
+    }
+}
 
 const models = {
   Estado: Estado(sequelize),
@@ -22,4 +31,4 @@ Object.keys(models).forEach(modelName => {
   }
 });
 
-module.exports = { sequelize, ...models };
+module.exports = { sequelize, ...models, connectDb };

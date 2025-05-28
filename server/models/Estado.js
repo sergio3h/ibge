@@ -2,7 +2,7 @@
 const { Sequelize } = require('sequelize');
 
 module.exports = (sequelize) => {
-  const Estado = sequelize.define('Estado', {
+  const Estado = sequelize.define('estados', {
     sigla: {
       type: Sequelize.STRING(2),
       primaryKey: true,

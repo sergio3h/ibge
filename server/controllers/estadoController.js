@@ -14,7 +14,7 @@ module.exports = {
         nome: estado.nome
       }));
       
-      res.json(resultado);
+      res.json({message: "oiiiii"});
     } catch (error) {
       res.status(500).json({ error: error.message });
     }
