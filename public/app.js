@@ -1,9 +1,44 @@
 document.addEventListener('DOMContentLoaded',function(){
-    const estadoSelect = document.getElementById('estado');
     const municipioSelect = document.getElementById('municipio');
     const estadoSelecionado = document.getElementById('estado-selecionado');
     const municipioSelecionato = document.getElementById('municipio-selecionado');
     const mapaSvg = document.getElementById('mapa');
+const estadoSelect = document.getElementById('estadoSelect');
+const resultadoDiv = document.getElementById('resultadoEstado');
+
+// 1. Carrega todos os estados
+fetch('/estados')
+  .then(response => response.json())
+  .then(estados => {
+    estados.forEach(estado => {
+      const option = document.createElement('option');
+      option.value = estado.nome; // ou estado.uf ou estado.gid, dependendo do seu filtro
+      option.textContent = estado.nome;
+      estadoSelect.appendChild(option);
+    });
+  });
+
+// 2. Quando o usuário seleciona um estado
+estadoSelect.addEventListener('change', () => {
+  const estadoSelecionado = estadoSelect.value;
+
+  if (estadoSelecionado) {
+    fetch(`/estados/${estadoSelecionado}`)
+      .then(response => response.json())
+      .then(dados => {
+        resultadoDiv.innerHTML = `
+          <p><strong>Nome:</strong> ${dados[0].nome}</p>
+          <p><strong>GID:</strong> ${dados[0].gid}</p>
+        `;
+      })
+      .catch(error => {
+        console.error('Erro ao buscar estado:', error);
+        resultadoDiv.textContent = 'Erro ao buscar estado.';
+      });
+  } else {
+    resultadoDiv.innerHTML = '';
+  }
+});
 
 
     //Load estados
